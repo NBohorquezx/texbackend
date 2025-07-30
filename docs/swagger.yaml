@@ -1,0 +1,9 @@
+basePath: /
+host: localhost:8080
+info:
+  contact: {}
+  description: Esta es la API de productos para la tienda.
+  title: API Tienda Online
+  version: "1.0"
+paths: {}
+swagger: "2.0"
