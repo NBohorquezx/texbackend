@@ -8,6 +8,7 @@ import (
 	"texbackend/routes"
 
 	_ "texbackend/docs"
+
 	httpSwagger "github.com/swaggo/http-swagger"
 )
 
