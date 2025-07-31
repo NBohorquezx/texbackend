@@ -1,9 +1,172 @@
-basePath: /
+basePath: /api/v1
+definitions:
+  models.Category:
+    properties:
+      activo:
+        type: boolean
+      descripcion:
+        type: string
+      fechaActualizacion:
+        type: string
+      fechaCreacion:
+        type: string
+      id:
+        type: integer
+      nombre:
+        type: string
+    type: object
+  models.Product:
+    properties:
+      descripcion:
+        type: string
+      destacado:
+        type: boolean
+      fecha_actualizacion:
+        type: string
+      fecha_creacion:
+        type: string
+      id:
+        type: integer
+      imagen:
+        type: string
+      nombre:
+        type: string
+      precio:
+        type: string
+      precio_descuento:
+        type: string
+      publicado:
+        type: boolean
+      stock:
+        type: integer
+    type: object
 host: localhost:8080
 info:
   contact: {}
   description: Esta es la API de productos para la tienda.
   title: API Tienda Online
   version: "1.0"
-paths: {}
+paths:
+  /categories:
+    get:
+      description: Obtiene todas las categorías desde la base de datos
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Category'
+            type: array
+      summary: Listar categorías
+      tags:
+      - categorias
+    post:
+      consumes:
+      - application/json
+      description: Crea una nueva categoría
+      parameters:
+      - description: Categoría
+        in: body
+        name: category
+        required: true
+        schema:
+          $ref: '#/definitions/models.Category'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Crear categoría
+      tags:
+      - categorias
+  /categories/{id}:
+    delete:
+      description: Elimina una categoría por su ID
+      parameters:
+      - description: ID de la categoría
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Eliminar categoría
+      tags:
+      - categorias
+  /products:
+    get:
+      description: Retorna una lista de productos
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Product'
+            type: array
+      summary: Obtener todos los productos
+      tags:
+      - products
+    post:
+      consumes:
+      - application/json
+      description: Crea un nuevo producto
+      parameters:
+      - description: Producto a crear
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/models.Product'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Product'
+      summary: Crear un producto
+      tags:
+      - products
+  /products/{id}:
+    delete:
+      description: Elimina un producto por ID
+      parameters:
+      - description: ID del producto
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "204":
+          description: No Content
+      summary: Eliminar un producto
+      tags:
+      - products
 swagger: "2.0"

@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"net/http"
+	"os"
 
 	"texbackend/config"
 	"texbackend/routes"
@@ -16,20 +17,26 @@ import (
 // @version 1.0
 // @description Esta es la API de productos para la tienda.
 // @host localhost:8080
-// @BasePath /
+// @BasePath /api/v1
 func main() {
-	// Inicializa la conexión
+	// Inicializa base de datos (sqlite por defecto)
 	if err := config.InitDB(); err != nil {
 		log.Fatal("❌ Error al conectar a la base de datos:", err)
 	}
-
-	// Obtiene la instancia *sql.DB
 	db := config.GetDB()
 
-	// Define rutas y servidor
+	// Cargar rutas
 	router := routes.SetupRoutes(db)
+
+	// Documentación Swagger en /swagger/index.html
 	router.PathPrefix("/swagger/").Handler(httpSwagger.WrapHandler)
 
-	log.Println("🚀 Servidor iniciado en http://localhost:8080")
-	log.Fatal(http.ListenAndServe(":8080", router))
+	// Puerto
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+
+	log.Printf("🚀 Servidor iniciado en http://localhost:%s", port)
+	log.Fatal(http.ListenAndServe(":"+port, router))
 }
